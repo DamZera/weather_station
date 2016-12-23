@@ -1,0 +1,59 @@
+<head>
+			<?php include('config.php'); ?>
+			<meta charset="UTF-8">
+			<script src="js/plotly-latest.min.js"></script>
+</head>
+<body>
+	<a href="index.php">Accueil</a><br/>
+	<a href="historique.php">Historique</a>
+	<div id="myDiv" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+	<div id="myDiv2" style="width: 480px; height: 400px;"><!-- Plotly chart will be drawn inside this DIV --></div>
+		<?php
+			try
+			{
+				$bdd = new PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'],$config['user'],$config['pass'],$pdo_options);
+			}
+			catch (Exception $e)
+			{
+				die('Erreur : ' . $e->getMessage());
+			}
+			
+			$reponse = $bdd->query('SELECT * FROM mesure ORDER BY date DESC');
+		?>
+				  
+					<?php 	$x="";
+					$y="";
+					$g="'";
+					for($i=0;$i<48;$i++){
+					
+					$donnees = $reponse->fetch()
+					$x.=$g.$donnees['date'].$g,
+					$y.=$g.$donnees['temperature'].$g,
+						
+					 } 
+					 echo $x;
+					 echo $y;
+					 ?>
+					 
+	<script>
+	var data = [
+	  {
+		x: ['2013-10-04 20:23:59', '2013-10-04 21:23:00', '2013-10-04 23:23:00'],
+		y: [1, 3, 6],
+		type: 'scatter'
+	  }
+	];
+
+	Plotly.newPlot('myDiv', data);
+
+	var data = [
+	  {
+		x: ['2013-10-04 20:23:59', '2013-10-04 21:23:00', '2013-10-04 23:23:00'],
+		y: [1, 3, 6],
+		type: 'scatter'
+	  }
+	];
+
+	Plotly.newPlot('myDiv2', data);
+	</script>
+</body>
